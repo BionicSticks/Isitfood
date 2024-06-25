@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IS IT FOOD</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles3.css') }}">
+</head>
+<body>
+    <div class="background" id="background"></div>
+    <div class="banner">IS IT FOOD THOUGH?</div>
+    <div class="container">
+        <form action="/check_food" method="post">
+            <label for="item">Enter an item to check if it is food:</label>
+            <input type="text" id="item" name="item">
+            <button type="submit">Check</button>
+        </form>
+        <div id="result">
+            {% if result %}
+                <p>{{ result }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Search history section -->
+        <div class="history">
+            <h2>Search History</h2>
+            <ul>
+                {% for entry in search_history %}
+                    <li>{{ entry.item }}: {{ entry.result }}</li>
+                {% endfor %}
+            </ul>
+            <form action="/clear_history" method="post">
+                <button type="submit">Clear History</button>
+            </form>
+        </div>
+    </div>
+    <script>
+    console.log("Script loaded");
+
+    let currentIndex = 0;
+    const images = [
+        "{{ url_for('static', filename='images/bg1.jpg') }}",
+        "{{ url_for('static', filename='images/bg2.jpg') }}",
+        "{{ url_for('static', filename='images/bg3.jpg') }}",
+        "{{ url_for('static', filename='images/bg4.jpg') }}",
+        "{{ url_for('static', filename='images/bg5.jpg') }}",
+        "{{ url_for('static', filename='images/bg6.jpg') }}"
+    ];
+
+    console.log("Images array:", images);
+
+    function changeBackground() {
+        currentIndex = (currentIndex + 1) % images.length;
+        console.log("Current index:", currentIndex);
+        const background = document.getElementById('background');
+        background.style.opacity = 0; // Start fade-out
+        console.log("Fade-out started");
+        setTimeout(() => {
+            background.style.backgroundImage = `url(${images[currentIndex]})`;
+            background.style.opacity = 1; // Fade-in
+            console.log("Background changed to:", images[currentIndex]);
+        }, 500); // Time for fade-out effect (match with CSS transition)
+    }
+
+    setInterval(changeBackground, 15000); // Change every 10 seconds
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        console.log("DOMContentLoaded event");
+        changeBackground(); // Initial background
+    });
+</script>
+</body>
+</html>
+
