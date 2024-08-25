@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 1s ease-in-out; /* Added transition for fade effect */
+    opacity: 1;
+}
+
+.banner {
+    background-color: #001f3f;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 36px; /* Increased font size */
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    position: fixed;
+    width: 100%; /* Ensures the banner spans the full width */
+    top: 0; /* Position it at the top of the page */
+    z-index: 2; /* Ensures the banner stays above other elements */
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1; /* Ensure it stays above the background */
+    margin-top: 100px; /* Add margin to avoid overlap with the banner */
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 18px;
+    color: #001f3f; /* Dark navy blue */
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #001f3f; /* Dark navy blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #003366; /* Slightly lighter navy blue */
+}
+
+#result p {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.history {
+    margin-top: 30px;
+}
+
+.history h2 {
+    color: #001f3f; /* Dark navy blue */
+    margin-bottom: 10px;
+}
+
+.history ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.history ul li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.history form {
+    margin-top: 10px;
+}
+
+.history button {
+    padding: 10px 20px;
+    background-color: #001f3f; /* Dark navy blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.history button:hover {
+    background-color: #003366; /* Slightly lighter navy blue */
+}
