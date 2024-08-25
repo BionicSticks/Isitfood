@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, redirect, url_for
 app = Flask(__name__)
 
 # List of foods
-foods = ["apple", "bean", "nut", "seed", "banana", "orange", "grape", "pineapple", "strawberry", "strawberries",
+foods = ["food", "apple", "bean", "nut", "seed", "banana", "orange", "grape", "pineapple", "strawberry", "strawberries",
          "blueberries", "blueberry", "raspberries", "blackberries", "cheese",
          "raspberry", "blackberry", "cherry", "mango", "peach", "plum", "pear", "apricot",
          "kiwi", "grapefruit", "lemon", "lime", "watermelon", "cantaloupe", "honeydew",
