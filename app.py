@@ -1,9 +1,11 @@
 from flask import Flask, request, render_template, redirect, url_for
+import os
+import requests
 
 app = Flask(__name__)
 
 # List of foods
-foods = ["apple", "bean", "nut", "seed", "banana", "orange", "grape", "pineapple", "strawberry", "strawberries",
+foods = ["food", "apple", "bean", "nut", "seed", "banana", "orange", "grape", "pineapple", "strawberry", "strawberries",
          "blueberries", "blueberry", "raspberries", "blackberries", "cheese",
          "raspberry", "blackberry", "cherry", "mango", "peach", "plum", "pear", "apricot",
          "kiwi", "grapefruit", "lemon", "lime", "watermelon", "cantaloupe", "honeydew",
@@ -93,10 +95,18 @@ def index():
 def check_food():
     item = request.form['item']
     normalized_item = normalize_item(item)
+    
     if normalized_item in foods:
-        result = "Yes, that is food."
+        result = "Yes, that is a natural food item."
     else:
-        result = "Ewwwww don't eat that, it's not food."
+        # Check with AI
+        is_food, explanation = check_with_ai(item)
+        if is_food is True:
+            result = f"According to our sources, that is a natural food item. {explanation}"
+        elif is_food is False:
+            result = f"According to our sources, that is not a natural food item for the following reasons: {explanation}"
+        else:
+            result = f"Unable to determine if that's a natural food item. {explanation}"
 
     # Add the search to history
     search_history.append({'item': item, 'result': result})
@@ -108,6 +118,39 @@ def clear_history():
     search_history.clear()
     return redirect(url_for('index'))
 
+
+def check_with_ai(item):
+    api_key = os.environ.get('CLOUDFLARE_API_KEY')
+    account_id = os.environ.get('CLOUDFLARE_ACCOUNT_ID')
+    
+    url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/meta/llama-2-7b-chat-int8"
+    
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    
+    prompt = f"""Is '{item}' a natural food item that is not ultraprocessed? 
+    Consider only whole foods, minimally processed foods, or traditional foods.
+    Exclude artificial additives, highly refined products, or foods with extensive industrial processing.
+    Please answer with only 'Yes' or 'No', followed by a brief explanation."""
+    
+    data = {
+        "messages": [
+            {"role": "system", "content": "You are a helpful assistant that determines if an item is a natural, non-ultraprocessed food."},
+            {"role": "user", "content": prompt}
+        ]
+    }
+    
+    response = requests.post(url, headers=headers, json=data)
+    
+    if response.status_code == 200:
+        ai_response = response.json()['result']['response'].strip()
+        is_food = ai_response.lower().startswith('yes')
+        explanation = ai_response.split(',', 1)[1].strip() if ',' in ai_response else ''
+        return is_food, explanation
+    else:
+        return None, "Error in establishing whether item is natural food"
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)

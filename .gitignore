@@ -87,3 +87,4 @@ venv/
 # Custom ignores
 .DS_Store
 Thumbs.db
+.env
